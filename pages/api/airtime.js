@@ -31,6 +31,11 @@ export default async function handler(req, res) {
     const data = await response.json();
     console.log("Response from Airtime API:", data);
 
+    // 🔹 Check if API returned an error
+    if (data.error) {
+      return res.status(400).json({ message: data.error, details: data });
+    }
+
     if (!response.ok) {
       return res.status(response.status).json({ 
         message: data.message || "Failed to purchase airtime", 
@@ -48,4 +53,5 @@ export default async function handler(req, res) {
       errorDetails: error.toString(),
     });
   }
+
 }
